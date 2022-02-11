@@ -1,5 +1,5 @@
-from asyncore import read
 import numpy as np
+import os
 
 def read_files(filename):
     df = np.loadtxt(filename, delimiter=' ', dtype=float)
@@ -20,5 +20,5 @@ def read_files(filename):
 
     return n, w, float_weights, float_values
 
-
-n, w, weights, values = read_files('tests/test')
+def get_test_files():
+    return os.listdir('tests')

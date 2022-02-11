@@ -2,8 +2,9 @@ from re import X
 from read_files import *
 from backtracking import *
 
-n, w, weights, values = read_files('tests/f1_l-d_kp_10_269')
+files = get_test_files()
 
-x = backtracking_knapsack(n, w, weights, values)
-
-print(x)
+for file in files:
+    n, w, weights, values = read_files('tests/' + file)
+    x = backtracking_knapsack(n, w, weights, values)
+    print('Nome do arquivo: ', file, '\t resultado: ', x)
