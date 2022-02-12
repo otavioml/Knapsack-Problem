@@ -1,6 +1,8 @@
 from hashlib import new
 from operator import itemgetter
 
+from backtracking import backtracking_knapsack
+
 class Item():
     def __init__(self, weight, value):
         self.weight = weight
@@ -70,3 +72,48 @@ def branch_and_bound_knapsack(W, values, weights, n):
     u.profit = 0
     u.weight = 0
     Q.append(u)
+
+    maxProfit = 0
+    while(len(Q)):
+
+        Q.sort(key=lambda a: a.bound)
+
+        u = Q[0]
+        Q.pop()
+
+        if (u.level == -1):
+            v.level = 0
+
+        if (u.level == n-1):
+            continue
+
+        v.level = u.level + 1
+
+        v.weight = u.weight + arr[v.level].weight
+        v.profit = u.profit + arr[v.level].value
+
+        if (v.weight <= W and v.profit > maxProfit):
+            maxProfit = v.profit
+
+        v.bound = bound(v, n, W, arr)
+
+        if (v.bound > maxProfit):
+            Q.append(v)
+
+        v.weight = u.weight
+        v.profit = u.profit
+        v.bound = bound(v, n, W, arr)
+
+        if (v.bound > maxProfit):
+            Q.append(v)
+
+    return maxProfit
+
+
+# W = 50
+# n = 3
+# v = [60, 100, 120]
+# w = [10, 20, 30]
+
+# x = branch_and_bound_knapsack(W, v, w, n)
+# print(x)
