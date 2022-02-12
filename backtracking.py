@@ -6,7 +6,5 @@ def backtracking_knapsack (n, w, weights, values):
     if (weights[n-1] > w):
         return backtracking_knapsack(n-1, w, weights, values)
 
-
-
     return max(values[n-1] + backtracking_knapsack(n-1, w-weights[n-1], weights, values),
                backtracking_knapsack(n-1, w, weights, values))
