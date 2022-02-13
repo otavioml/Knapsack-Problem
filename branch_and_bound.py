@@ -45,7 +45,7 @@ def bound(node, n, W, values, weights):
             bound += + (W - total_weight) * (values[k]/weights[k])
         return bound
 
-def bnb(W, values, weights, n):
+def branch_and_bound_knapsack(W, values, weights, n):
 
     values, weights = sort_values_and_weights(values, weights, n)
 
