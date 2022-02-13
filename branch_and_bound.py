@@ -9,141 +9,84 @@ def sort_values_and_weights(values, weights, n):
     aux.reverse()
     sorted_values = []
     sorted_weights = []
-    # ans = []
 
     for a in aux:
         sorted_values.append(a[0])
         sorted_weights.append(a[1])
-        # ans.append(Item(a[1], a[0]))
 
-    return sorted_values, sorted_weights
+    return sorted_values, sorted_weights      
 
-# class Item():
-#     def __init__(self, weight, value):
-#         self.weight = weight
-#         self.value = value
+class Node:
+    def __init__(self, level, value, weight):
+        self.items = []
+        self.level = level
+        self.value = value
+        self.weight = weight
+        
+            
+def bound(node, n, W, values, weights):
 
+    if node.weight >= W:
+        return 0
+    else:
 
-# class Node():
-#     def __init__(self, level, profit, bound, weight):
-#         self.level = level
-#         self.profit = profit
-#         self.bound = bound
-#         self.weight = weight
+        bound = node.value
+        j = node.level + 1
+        total_weight = node.weight
 
-# def cmp(a, b):
-#     r1 = (a.value/a.weight)
-#     r2 = (b.value/b.weight)
-#     return r1 > r2
+        while j <= n-1 and total_weight + weights[j] <= W:
+            total_weight += + weights[j]
+            bound += + values[j]
+            j+=1
 
+        k = j
 
-# def bound(u, n, W, arr):
+        if k <= n-1:
+            bound += + (W - total_weight) * (values[k]/weights[k])
+        return bound
 
-#     if (u.weight > W):
-#         return 0
+def bnb(W, values, weights, n):
 
-#     profit_bound = u.profit
+    values, weights = sort_values_and_weights(values, weights, n)
 
-#     j = u.level + 1
-#     totweight = u.weight
+    pq = []
 
-#     while((j < n) and (totweight + arr[j].weight <= W)):
+    v = Node(-1, 0, 0)
+    maxProfit = 0
+    v.bound = bound(v, n, W, values, weights)
 
-#         totweight += arr[j].weight
-#         profit_bound += arr[j].value
-#         j += 1
+    pq.append(v)
 
-#     if (j < n):
-#         profit_bound += (W - totweight) * arr[j].value/arr[j].weight
+    while pq:
 
-#     return profit_bound
+        pq.sort(key=lambda i: i.bound)
+        
+        v = pq.pop(0)
 
+        if v.bound > maxProfit: 
 
-# def branch_and_bound_knapsack(W, values, weights, n):
+            u = Node(0, 0, 0)
 
-#     arr = sort_values_and_weights(values, weights, n)
+            u.level = v.level + 1
+            u.value = v.value + values[u.level]
+            u.weight = v.weight + weights[u.level]
 
-#     Q = []
-#     u = Node(None, None, None, None)
-#     v = Node(None, None, None, None)
+            u.items = v.items.copy()
+            u.items.append(u.level)
 
-#     u.level = -1
-#     u.profit = 0
-#     u.weight = 0
-#     Q.append(u)
+            if u.weight <= W and u.value > maxProfit: 
+                maxProfit = u.value
+                
+            u.bound = bound(u, n, W, values, weights)
 
-#     maxProfit = 0
-#     while(len(Q)):
+            if u.bound > maxProfit:
+                pq.append(u)
 
-#         Q.sort(key=lambda a: a.bound)
-#         Q.reverse()
+            u2 = Node(u.level, v.value, v.weight)
+            u2.bound = bound(u2, n, W, values, weights)
+            u2.items = v.items.copy()
 
-#         u = Q[0]
-#         Q.pop(0)
+            if u2.bound > maxProfit:
+                pq.append(u2)
 
-#         if (u.level == -1):
-#             v.level = 0
-
-#         if (u.level == n-1):
-#             continue
-
-#         v.level = u.level + 1
-
-#         v.weight = u.weight + arr[v.level].weight
-#         v.profit = u.profit + arr[v.level].value
-
-#         if (v.weight <= W and v.profit > maxProfit):
-#             maxProfit = v.profit
-
-#         v.bound = bound(v, n, W, arr)
-
-#         if (v.bound >= maxProfit):
-#             Q.append(v)
-
-#         v.weight = u.weight
-#         v.profit = u.profit
-#         v.bound = bound(v, n, W, arr)
-
-#         if (v.bound >= maxProfit):
-#             Q.append(v)
-
-#     return maxProfit
-
-
-# W = 10
-# n = 4
-# v = [12, 42, 25, 40]
-# w = [3, 7, 5, 4]
-
-# x = branch_and_bound_knapsack(W, v, w, n)
-# print(x)
-
-
-# # item1 = Item(4, 40)
-# # item2 = Item(7, 42)
-# # item3 = Item(5, 25)
-# # item4 = Item(3, 12)
-
-# # l = []
-# # l.append(item1)
-# # l.append(item4)
-# # l.append(item3)
-# # l.append(item2)
-
-# # for l1 in l:
-# #     print(l1.weight, l1.value)
-
-# # l.sort(key=lambda a: a.value/a.weight)
-# # l.reverse()
-
-# # print("*****")
-
-# # for l1 in l:
-# #     print(l1.weight, l1.value)
-
-# # l.pop(0)
-
-# # print("*****")
-
-# # for l1 in l:
-# #     print(l1.weight, l1.value)
+    return maxProfit
