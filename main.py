@@ -4,7 +4,8 @@ from branch_and_bound import *
 from bnb import *
 from dp import *
 
-files = get_test_files()
+# files = get_test_files()
+files = ['f8_l-d_kp_23_10000']
 
 print("Solucao com backtracking")
 

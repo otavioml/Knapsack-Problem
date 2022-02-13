@@ -3,7 +3,7 @@ class Priority_Queue:
         self.pqueue = []
         self.length = 0
     
-    def insert(self, node):
+    def insert(self, node, n, p_per_weight, W, p, w):
         for i in self.pqueue:
             get_bound(i , n, p_per_weight, W, p, w)
         i = 0
@@ -62,18 +62,21 @@ def bnb(W, p, w, p_per_weight, n):
     #print("v.bound = ", v.bound)
 
 
-    pq.insert(v)
+    pq.insert(v, n, p_per_weight, W, p, w)
 
     while pq.length != 0:
         
         v = pq.remove() #remove node with best bound
-    #    print("\nNode removed from pq.")
-    #    print("Priority Queue: ") 
-    #    pq.print_pqueue()
+
+        # print("*****************************")
+       
+        # print("\nNode removed from pq.")
+        # print("Priority Queue: ") 
+        # pq.print_pqueue()
         
-    #    print("\nmaxprofit = ", maxprofit)
-    #    print("Parent Node: ")
-    #    print("v.level = ", v.level, "v.profit = ", v.profit, "v.weight = ", v.weight, "v.bound = ", v.bound, "v.items = ", v.items)
+        # print("\nmaxprofit = ", maxprofit)
+        # print("Parent Node: ")
+        # print("v.level = ", v.level, "v.profit = ", v.profit, "v.weight = ", v.weight, "v.bound = ", v.bound, "v.items = ", v.items)
 
         if v.bound > maxprofit: #check if node is still promising
             #set u to the child that includes the next item
@@ -98,7 +101,7 @@ def bnb(W, p, w, p_per_weight, n):
             u.bound = get_bound(u, n, p_per_weight, W, p, w)
     #        print("u.bound = ", u.bound)
             if u.bound > maxprofit:
-                pq.insert(u)
+                pq.insert(u, n, p_per_weight, W, p, w)
     #            print("Node u1 inserted into pq.")
     #            print("Priority Queue : ") 
     #            pq.print_pqueue()
@@ -112,26 +115,20 @@ def bnb(W, p, w, p_per_weight, n):
     #        print("u2.level = ", u2.level, "u2.profit = ", u2.profit, "u2.weight = ", u2.weight, "u2.bound = ", u2.bound)
     #        print("u2.items = ", u2.items)
             if u2.bound > maxprofit:
-                pq.insert(u2)
+                pq.insert(u2, n, p_per_weight, W, p, w)
     #            print("Node u2 inserted into pq.")
     #            print("Priority Queue : ") 
     #            pq.print_pqueue()
 
     return maxprofit
 
+# n = 4
+# W = 10
+# p = [40, 42, 25, 12]
+# w = [4, 7, 5, 3]
+# p_per_weight = []
+# for i in range(n):
+#     p_per_weight.append(p[i]/w[i])
 
-# print("\nEND maxprofit = ", maxprofit, "nodes generated = ", nodes_generated)
-# print("bestitems = ", bestitems)
-
-# def bnb(W, p, w, p_per_weight, n):
-
-n = 4
-W = 10
-p = [40, 42, 25, 12]
-w = [4, 7, 5, 3]
-p_per_weight = []
-for i in range(n):
-    p_per_weight.append(p[i]/w[i])
-
-x = bnb (W, p, w, p_per_weight, n)
-print(x)
+# x = bnb (W, p, w, p_per_weight, n)
+# print(x)
