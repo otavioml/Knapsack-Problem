@@ -65,28 +65,28 @@ def branch_and_bound_knapsack(W, values, weights, n):
 
         if v.bound > maxProfit: 
 
-            u = Node(0, 0, 0)
+            node = Node(0, 0, 0)
 
-            u.level = v.level + 1
-            u.value = v.value + values[u.level]
-            u.weight = v.weight + weights[u.level]
+            node.level = v.level + 1
+            node.value = v.value + values[node.level]
+            node.weight = v.weight + weights[node.level]
 
-            u.items = v.items.copy()
-            u.items.append(u.level)
+            node.items = v.items.copy()
+            node.items.append(node.level)
 
-            if u.weight <= W and u.value > maxProfit: 
-                maxProfit = u.value
+            if node.weight <= W and node.value > maxProfit: 
+                maxProfit = node.value
                 
-            u.bound = bound(u, n, W, values, weights)
+            node.bound = bound(node, n, W, values, weights)
 
-            if u.bound > maxProfit:
-                pq.append(u)
+            if node.bound > maxProfit:
+                pq.append(node)
 
-            u2 = Node(u.level, v.value, v.weight)
-            u2.bound = bound(u2, n, W, values, weights)
-            u2.items = v.items.copy()
+            node2 = Node(node.level, v.value, v.weight)
+            node2.bound = bound(node2, n, W, values, weights)
+            node2.items = v.items.copy()
 
-            if u2.bound > maxProfit:
-                pq.append(u2)
+            if node2.bound > maxProfit:
+                pq.append(node2)
 
     return maxProfit
